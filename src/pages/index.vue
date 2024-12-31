@@ -61,15 +61,16 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-card class="pa-4" outlined>
-          <v-card-title class="text-center">País: {{ sharedselectedCountry }}</v-card-title>
-          <v-card-title class="text-center">Tienda: {{ sharedselectedOption }}</v-card-title>
+          <v-card-title class="text-center"></v-card-title>
           <v-card-title class="text-center">Tiempo Promedio de Atención</v-card-title>
+          <v-card-title class="text-center"></v-card-title>
           <v-card-text>
             <v-progress-linear :model-value="averageTimePercentage"
-              :color="averageTimePercentage > 50 ? 'red' : 'green'" height="22" class="mb-2">
+              :color="averageTimePercentage > 50 ? 'red' : 'green'" height="30" class="mb-2">
             </v-progress-linear>
           </v-card-text>
           <span class="text-gray">{{ formatTime(totalAverageTime) }}</span>
+          <v-card-title class="text-center"></v-card-title>
         </v-card>
       </v-col>
 
