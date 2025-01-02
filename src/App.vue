@@ -27,7 +27,9 @@
           <v-menu>
             <template v-slot:activator="{ props }">
               <v-btn icon="mdi-earth" variant="text" v-bind="props"></v-btn>
-              {{ general ? "Tiendas de " + selectedCountry : "Tienda: " + selectedOption }}
+              {{ general ? $t('$vuetify.dataIterator.Stores') + ' ' + selectedCountry :
+                $t('$vuetify.dataIterator.Store') + ': ' + selectedOption }}
+
             </template>
             <v-list>
               <v-list-item v-for="(item, i) in items" :key="i" class="d-flex justify-right" link>
@@ -71,7 +73,7 @@
           <v-btn icon @click="setLanguage('pt')" color="white">
             <img src="/src/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
           </v-btn>
-          <v-btn icon @click="setLanguage('en')" color="white">
+          <v-btn icon @click="setLanguage('fr')" color="white">
             <img src="/src/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
           </v-btn>
         </v-toolbar>
@@ -102,6 +104,8 @@ import Index from '/src/pages/index.vue';
 
 export default {
   data: () => ({
+    currentLocale: '',
+    currentMessages: '',
     isLoggedIn: false,
     general: false,
     currentTime: "",
@@ -137,12 +141,15 @@ export default {
     Index,
   },
   created() {
+    // Asigna el idioma y las traducciones a las variables para mostrar en la interfaz
+    this.currentLocale = this.$i18n.locale;
     this.updateTime();
     this.updateDate();
     setInterval(this.updateTime, 1000); // Actualiza la hora cada segundo
 
     // Selección inicial predeterminada
     this.handleOptionClick("Argentina", "Vicente López");
+
   },
   methods: {
     handleOptionClick(country, option) {
@@ -164,9 +171,13 @@ export default {
       this.currentDate = now.toLocaleDateString(); // Solo la fecha
     },
     setLanguage(lang) {
-      console.log(`Idioma seleccionado: ${lang}`);
-      // Aquí puedes implementar el cambio de idioma en tu aplicación
-    },
+      this.$i18n.locale = lang;  // Cambia el idioma
+      console.log(this.$i18n.locale);  // Verifica que el idioma se haya cambiado correctamente
+      console.log(this.$t('$vuetify.dataIterator.Store'));
+
+    }
+
+
   },
 };
 </script>
