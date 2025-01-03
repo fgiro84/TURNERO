@@ -22,7 +22,7 @@
 
       <v-main>
 
-        <v-toolbar density="compact" color="dark">
+        <v-toolbar color="dark">
 
           <v-menu>
             <template v-slot:activator="{ props }">
@@ -59,13 +59,24 @@
           </v-menu>
           <v-spacer></v-spacer>
 
-          <v-card color="surface-light" style="width: 800px;">
-            <v-card-text>
-              <v-text-field append-inner-icon="mdi-magnify" density="compact" hide-details placeholder="Tiendas..."
-                variant="outlined" single-line style="max-width: 300px;" @click:append-inner="onClick"
+          <v-card color="surface-light" style="width: 800px; position: relative;">
+            <v-card-text style="display: flex; align-items: center;">
+              <!-- Campo de texto con búsqueda -->
+              <v-text-field v-model="searchQuery" append-inner-icon="mdi-magnify" density="compact" hide-details
+              :placeholder="$t('$vuetify.dataIterator.search')" variant="outlined" single-line style="max-width: 300px;"
                 rounded></v-text-field>
+
+              <!-- Sugerencias como v-chip a la derecha -->
+              <div v-if="searchQuery && filteredItems.length"
+                style="margin-left: 16px; display: flex; flex-wrap: wrap;">
+                <v-chip v-for="(item, index) in limitedItems" :key="index" class="ma-1" :color="getRandomColor()"
+                  outlined @click="selectStore(item)">
+                  {{ item.city }}
+                </v-chip>
+              </div>
             </v-card-text>
           </v-card>
+
 
           <v-btn icon @click="setLanguage('es')" color="white">
             <img src="/src/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
@@ -104,6 +115,8 @@ import Index from '/src/pages/index.vue';
 
 export default {
   data: () => ({
+    searchQuery: "",
+    colors: ["primary", "secondary", "success", "error", "info", "warning", "pink", "indigo"], // Colores predefinidos
     currentLocale: '',
     currentMessages: '',
     isLoggedIn: false,
@@ -152,9 +165,21 @@ export default {
 
   },
   methods: {
+    getRandomColor() {
+      // Devuelve un color aleatorio del arreglo de colores
+      const randomIndex = Math.floor(Math.random() * this.colors.length);
+      return this.colors[randomIndex];
+    },
+    selectStore(store) {
+      console.log(`Tienda seleccionada: ${store.city}`);
+      this.searchQuery = "", // Actualiza el campo con la tienda seleccionada
+      this.selectedOption = `${store.city}`;
+      this.general = false;
+    },
     handleOptionClick(country, option) {
       this.selectedCountry = `${country}`;
       this.selectedOption = `${option}`;
+      console.log(`Tienda seleccionada: ${option}`);
       this.general = false;
     },
     selectCountryHandler(country) {
@@ -176,8 +201,23 @@ export default {
       console.log(this.$t('$vuetify.dataIterator.Store'));
 
     }
-
-
+  },
+  computed: {
+    filteredItems() {
+      return this.items
+        .map(item =>
+          item.options
+            .filter(option =>
+              option.toLowerCase().includes(this.searchQuery.toLowerCase())
+            )
+            .map(city => ({ city }))
+        )
+        .flat();
+    },
+    limitedItems() {
+      // Limitamos las sugerencias a 3
+      return this.filteredItems.slice(0, 3);
+    },
   },
 };
 </script>
