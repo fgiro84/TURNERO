@@ -22,7 +22,7 @@
 
       <v-main>
 
-        <v-toolbar color="dark">
+        <v-toolbar density="compact" color="dark">
 
           <v-menu>
             <template v-slot:activator="{ props }">
