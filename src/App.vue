@@ -3,92 +3,70 @@
     <LoginForm v-if="!isLoggedIn" @login-success="isLoggedIn = true" />
     <v-app v-else>
       <!-- Tu código existente para la interfaz principal -->
-      <v-app-bar app>
-        <!-- Título centrado con ícono -->
-        <v-toolbar-title style="color: #E0E0E0; font-size: 32px; font-weight: bold;">
-          <v-icon left color="#E0E0E0" style="font-size: 28px; margin-right: 10px;">mdi-bulletin-board</v-icon> KPI
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <!-- Hora a la derecha -->
-        <span style="color: #E0E0E0; margin-right: 10px; font-size: 20px;">
-          <v-icon left color="#E0E0E0" style="font-size: 20px;">mdi-clock</v-icon> {{ currentTime }}
-        </span>
-        <!-- Fecha a la derecha -->
-        <span style="color: #E0E0E0; margin-right: 10px; font-size: 20px;">
-          <v-icon left color="#E0E0E0" style="font-size: 20px;">mdi-calendar</v-icon> {{ currentDate }}
-        </span>
-
-      </v-app-bar>
-
-      <v-main>
-
-        <v-toolbar density="compact" color="dark">
-
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn icon="mdi-earth" variant="text" v-bind="props"></v-btn>
-              {{ general ? $t('$vuetify.dataIterator.Stores') + ' ' + selectedCountry :
-                $t('$vuetify.dataIterator.Store') + ': ' + selectedOption }}
-
-            </template>
-            <v-list>
-              <v-list-item v-for="(item, i) in items" :key="i" class="d-flex justify-right" link>
-                <template v-slot:append>
-                  <v-icon icon="mdi-menu-right" size="x-small"></v-icon>
+      <v-app-bar app fixed>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn icon="mdi-earth" variant="text" v-bind="props"></v-btn>
+            {{ general ? $t('$vuetify.dataIterator.Stores') + ' ' + selectedCountry :
+              $t('$vuetify.dataIterator.Store') + ': ' + selectedOption }}
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, i) in items" :key="i" class="d-flex justify-right" link>
+              <template v-slot:append>
+                <v-icon icon="mdi-menu-right" size="x-small"></v-icon>
+              </template>
+              <v-menu :open-on-focus="false" activator="parent" open-on-hover submenu>
+                <template v-slot:activator="{ props }">
+                  <v-btn text v-bind="props" @click="selectCountryHandler(item.title)">
+                    <!-- Se asigna el país al hacer clic -->
+                    <div class="d-flex align-center">
+                      <img :src="`/src/flags/${item.flag}`" alt="Flag"
+                        style="width: 24px; height: 24px; margin-right: 8px;" />
+                      <span>{{ item.title }}</span>
+                    </div>
+                  </v-btn>
                 </template>
-                <v-menu :open-on-focus="false" activator="parent" open-on-hover submenu>
-                  <template v-slot:activator="{ props }">
-                    <v-btn text v-bind="props" @click="selectCountryHandler(item.title)">
-                      <!-- Se asigna el país al hacer clic -->
-                      <div class="d-flex align-center">
-                        <img :src="`/src/flags/${item.flag}`" alt="Flag"
-                          style="width: 24px; height: 24px; margin-right: 8px;" />
-                        <span>{{ item.title }}</span>
-                      </div>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item v-for="(option, j) in item.options" :key="j"
-                      @click="handleOptionClick(item.title, option)">
-                      <v-list-item-title>{{ option }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-spacer></v-spacer>
+                <v-list>
+                  <v-list-item v-for="(option, j) in item.options" :key="j"
+                    @click="handleOptionClick(item.title, option)">
+                    <v-list-item-title>{{ option }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-spacer></v-spacer>
 
-          <v-card color="surface-light" style="width: 800px; position: relative;">
-            <v-card-text style="display: flex; align-items: center;">
-              <!-- Campo de texto con búsqueda -->
-              <v-text-field v-model="searchQuery" append-inner-icon="mdi-magnify" density="compact" hide-details
+        <v-card style="width: 800px;">
+          <v-card-text style="display: flex; align-items: center;">
+            <!-- Campo de texto con búsqueda -->
+            <v-text-field v-model="searchQuery" append-inner-icon="mdi-magnify" density="compact" hide-details
               :placeholder="$t('$vuetify.dataIterator.search')" variant="outlined" single-line style="max-width: 300px;"
-                rounded></v-text-field>
+              rounded></v-text-field>
 
-              <!-- Sugerencias como v-chip a la derecha -->
-              <div v-if="searchQuery && filteredItems.length"
-                style="margin-left: 16px; display: flex; flex-wrap: wrap;">
-                <v-chip v-for="(item, index) in limitedItems" :key="index" class="ma-1" :color="getRandomColor()"
-                  outlined @click="selectStore(item)">
-                  {{ item.city }}
-                </v-chip>
-              </div>
-            </v-card-text>
-          </v-card>
+            <!-- Sugerencias como v-chip a la derecha -->
+            <div v-if="searchQuery && filteredItems.length" style="margin-left: 16px; display: flex; flex-wrap: wrap;">
+              <v-chip v-for="(item, index) in limitedItems" :key="index" class="ma-1" color="white" outlined
+                @click="selectStore(item)">
+                {{ item.city }}
+              </v-chip>
+            </div>
+          </v-card-text>
+        </v-card>
 
 
-          <v-btn icon @click="setLanguage('es')" color="white">
-            <img src="/src/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
-          </v-btn>
-          <v-btn icon @click="setLanguage('pt')" color="white">
-            <img src="/src/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
-          </v-btn>
-          <v-btn icon @click="setLanguage('fr')" color="white">
-            <img src="/src/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
-          </v-btn>
-        </v-toolbar>
-
+        <v-btn icon @click="setLanguage('es')" color="white">
+          <img src="/src/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
+        </v-btn>
+        <v-btn icon @click="setLanguage('pt')" color="white">
+          <img src="/src/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
+        </v-btn>
+        <v-btn icon @click="setLanguage('fr')" color="white">
+          <img src="/src/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
+        </v-btn>
+      </v-app-bar>
+      <v-main>
         <v-container>
           <router-view>
             <Index :sharedselectedOption="selectedOption" :sharedselectedCountry="selectedCountry"
@@ -103,6 +81,15 @@
           {{ new Date().getFullYear() }}
           <span style="color: #E0E0E0">Go2Future Global LLC.</span>
           <span style="color: #E0E0E0">Todos los derechos reservados.</span>
+        </span>
+        <v-spacer></v-spacer>
+        <!-- Hora a la derecha -->
+        <span style="color: #E0E0E0; margin-right: 10px;">
+          <v-icon left color="#E0E0E0">mdi-clock</v-icon> {{ currentTime }}
+        </span>
+        <!-- Fecha a la derecha -->
+        <span style="color: #E0E0E0; margin-right: 10px;">
+          <v-icon left color="#E0E0E0">mdi-calendar</v-icon> {{ currentDate }}
         </span>
       </v-footer>
     </v-app>
@@ -173,7 +160,7 @@ export default {
     selectStore(store) {
       console.log(`Tienda seleccionada: ${store.city}`);
       this.searchQuery = "", // Actualiza el campo con la tienda seleccionada
-      this.selectedOption = `${store.city}`;
+        this.selectedOption = `${store.city}`;
       this.general = false;
     },
     handleOptionClick(country, option) {

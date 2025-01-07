@@ -243,28 +243,6 @@ export default {
   },
   data() {
     return {
-      urls: {
-        Argentina: [
-          "http://192.168.0.162:4000/vicentelopez",
-          "http://192.168.0.162:4000/cordoba",
-          "http://192.168.0.162:4000/mendoza",
-        ],
-        Brasil: [
-          "http://192.168.0.162:4000/pinheiros",
-          "http://192.168.0.162:4000/brasiliasul",
-          "http://192.168.0.162:4000/vilavelha",
-        ],
-        España: [
-          "http://192.168.0.162:4000/alcobendas",
-          "http://192.168.0.162:4000/lamaquinista",
-          "http://192.168.0.162:4000/sevillaeste",
-        ],
-        Francia: [
-          "http://192.168.0.162:4000/montesson",
-          "http://192.168.0.162:4000/villiersenbiere",
-          "http://192.168.0.162:4000/lille",
-        ],
-      },
       totalayer: 0,
       total30dias: 0,
       total: 0,
@@ -402,7 +380,7 @@ export default {
           { name: 'Lille', resource: 'lille' }
         ];
 
-        const baseUrl = 'http://192.168.0.162:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
 
         // Iterar sobre todas las tiendas
         for (let i = 0; i < tiendas.length; i++) {
@@ -465,7 +443,7 @@ export default {
     async getTotal() {
       try {
         // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://192.168.0.162:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
         const response = await axios.get(`${baseUrl}${this.resource}`);
 
         // Accede directamente al objeto `response.data`
