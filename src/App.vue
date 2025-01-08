@@ -20,7 +20,8 @@
                   <v-btn text v-bind="props" @click="selectCountryHandler(item.title)">
                     <!-- Se asigna el país al hacer clic -->
                     <div class="d-flex align-center">
-                      <img :src="`/src/flags/${item.flag}`" alt="Flag"
+                    
+                      <img :src="`/flags/${item.flag}`" alt="Flag"
                         style="width: 24px; height: 24px; margin-right: 8px;" />
                       <span>{{ item.title }}</span>
                     </div>
@@ -57,13 +58,13 @@
 
 
         <v-btn icon @click="setLanguage('es')" color="white">
-          <img src="/src/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
+          <img src="/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
         </v-btn>
         <v-btn icon @click="setLanguage('pt')" color="white">
-          <img src="/src/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
+          <img src="/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
         </v-btn>
         <v-btn icon @click="setLanguage('fr')" color="white">
-          <img src="/src/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
+          <img src="/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
         </v-btn>
       </v-app-bar>
       <v-main>
