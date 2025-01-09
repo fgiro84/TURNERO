@@ -11,7 +11,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    
+
     plugins: [
         VueRouter(),
         Vue({
@@ -51,7 +51,7 @@ export default defineConfig({
         ],
     },
     server: {
-        host: '192.168.0.162',
+        host: '192.168.1.46',
         port: 3000,
     },
     css: {

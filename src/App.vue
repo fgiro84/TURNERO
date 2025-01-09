@@ -4,6 +4,8 @@
     <v-app v-else>
       <!-- Tu código existente para la interfaz principal -->
       <v-app-bar app fixed>
+        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" app></v-app-bar-nav-icon>
+        <v-toolbar-title>KPI</v-toolbar-title>
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-earth" variant="text" v-bind="props"></v-btn>
@@ -20,7 +22,7 @@
                   <v-btn text v-bind="props" @click="selectCountryHandler(item.title)">
                     <!-- Se asigna el país al hacer clic -->
                     <div class="d-flex align-center">
-                    
+
                       <img :src="`/flags/${item.flag}`" alt="Flag"
                         style="width: 24px; height: 24px; margin-right: 8px;" />
                       <span>{{ item.title }}</span>
@@ -67,15 +69,42 @@
           <img src="/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
         </v-btn>
       </v-app-bar>
-      <v-main>
-        <v-container>
-          <router-view>
-            <Index :sharedselectedOption="selectedOption" :sharedselectedCountry="selectedCountry"
-              :sharedgeneral="general" />
-          </router-view>
-        </v-container>
 
-      </v-main>
+      <v-navigation-drawer v-model="drawer" location="left" app>
+        <template v-slot:prepend>
+          <v-list-item lines="two" prepend-avatar="/max.png" subtitle="Logged in" title="MAX T CARR"></v-list-item>
+        </template>
+
+        <v-divider></v-divider>
+        <v-list nav>
+          <v-list-item @click="navigateToIndex" prepend-icon="mdi-view-dashboard" title="Panel" value="dashboard"
+            color="#00ffcc"></v-list-item>
+          <v-list-item @click="navigateToAccount" prepend-icon="mdi-account-cog" title="Cuentas" value="error"
+            color="#00ffcc"></v-list-item>
+          <v-list-item @click="navigateToSetting" prepend-icon="mdi-cogs" title="Configurar" value="config"
+            color="#00ffcc"></v-list-item>
+          <v-list-item @click="openDialog('logout')" prepend-icon="mdi-exit-to-app" title="Salir"
+            color="#00ffcc"></v-list-item>
+        </v-list>
+        <v-dialog v-model="dialogVisible" persistent max-width="500px">
+          <v-card>
+            <v-card-title>{{ dialogTitle }}</v-card-title>
+            <v-card-text>{{ dialogMessage }}</v-card-text>
+            <v-card-actions>
+              <v-btn color="#00ffcc" @click="closeDialog">Cancelar</v-btn>
+              <v-btn color="#00ffcc" @click="confirmDialogAction">Aceptar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-navigation-drawer>
+
+
+
+      <router-view>
+
+      </router-view>
+
+
 
       <v-footer app fixed>
         <span class="white--text" style="color: #E0E0E0;">&copy;
@@ -108,12 +137,16 @@ export default {
     currentLocale: '',
     currentMessages: '',
     isLoggedIn: false,
+    dialogVisible: false,
+    dialogTitle: '',
+    dialogMessage: '',
     general: false,
     currentTime: "",
     currentDate: "",
     selectedCountry: "País seleccionado: Argentina", // País predeterminado
     selectedOption: "Tienda: Vicente López", // Tienda predeterminada
     isFocused: false,
+    drawer: false,
     items: [
       {
         title: "Argentina",
@@ -146,6 +179,7 @@ export default {
     this.currentLocale = this.$i18n.locale;
     this.updateTime();
     this.updateDate();
+
     setInterval(this.updateTime, 1000); // Actualiza la hora cada segundo
 
     // Selección inicial predeterminada
@@ -153,11 +187,27 @@ export default {
 
   },
   methods: {
-    getRandomColor() {
-      // Devuelve un color aleatorio del arreglo de colores
-      const randomIndex = Math.floor(Math.random() * this.colors.length);
-      return this.colors[randomIndex];
+    openDialog(action) {
+      if (action === 'logout') {
+        this.dialogTitle = 'Cerrar Sesión';
+        this.dialogMessage = '¿Está seguro que desea cerrar sesión?';
+      }
+      this.dialogVisible = true;
     },
+    closeDialog() {
+      this.dialogVisible = false;
+    },
+    confirmDialogAction() {
+      if (this.dialogTitle === 'Cerrar Sesión') {
+        this.logout();
+      }
+      this.dialogVisible = false;
+    },
+    logout() {
+      this.navigateToIndex();
+      this.isLoggedIn = false; // Cambiar a estado no logueado
+    },
+
     selectStore(store) {
       console.log(`Tienda seleccionada: ${store.city}`);
       this.searchQuery = "", // Actualiza el campo con la tienda seleccionada
@@ -188,7 +238,16 @@ export default {
       console.log(this.$i18n.locale);  // Verifica que el idioma se haya cambiado correctamente
       console.log(this.$t('$vuetify.dataIterator.Store'));
 
-    }
+    },
+    navigateToIndex() {
+      this.$router.push({ path: '/' });
+    },
+    navigateToAccount() {
+      this.$router.push({ path: '/account' });
+    },
+    navigateToSetting() {
+      this.$router.push({ path: '/setting' });
+    },
   },
   computed: {
     filteredItems() {

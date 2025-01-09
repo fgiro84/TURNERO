@@ -1,229 +1,233 @@
 <template>
-  <v-container v-if="!sharedgeneral">
-    <v-row justify="center">
-      <v-col cols="12" md="4" class="d-flex flex-column">
-        <v-card class="pa-4" outlined style="flex-grow: 1;">
-          <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.BoxState') }}</v-card-title>
-          <v-card-text class="d-flex justify-center align-center" style="flex-grow: 1;">
-            <v-progress-circular :model-value="(abiertas / total) * 100" :size="130" :width="20" color="green">
-              <template v-slot:default>
-                <span class="text-gray">{{ ((abiertas / total) * 100).toFixed(0) }}%</span>
-              </template>
-            </v-progress-circular>
-          </v-card-text>
-          <span class="text-gray">
-            {{ this.$t('$vuetify.dataIterator.BoxState2') }} {{ abiertas }} {{ this.$t('$vuetify.dataIterator.of') }} {{
-            total }}
-          </span>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" md="4">
-        <v-row dense>
-          <!-- Primera Card -->
-          <v-col cols="12">
-            <v-card class="pa-4" outlined>
-              <v-card-title class="text-center text-h6">{{ this.$t('$vuetify.dataIterator.atention') }}</v-card-title>
-              <v-card-text class="text-center">
-                <v-chip color="green" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
-                  <v-icon class="mr-2" size="20">mdi-account-group</v-icon>
-                  <span>{{ totalClientes }}</span>
-                </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-col>
-
-          <!-- Tercera Card -->
-          <v-col cols="6">
-            <v-card class="pa-4" outlined>
-              <v-card-title class="text-center text-body-2">{{ this.$t('$vuetify.dataIterator.yesterday')
-                }}</v-card-title>
-              <v-card-text class="text-center">
-                <v-chip color="red" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
-                  <v-icon class="mr-2" size="20">mdi-account-supervisor</v-icon>
-                  <span>{{ totalayer }}</span>
-                </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-col>
-
-          <!-- Cuarta Card Vacía -->
-          <v-col cols="6">
-            <v-card class="pa-4" outlined>
-              <v-card-title class="text-body-2">{{ this.$t('$vuetify.dataIterator.yesterday30') }}</v-card-title>
-              <v-card-text class="text-center">
-                <v-chip color="blue" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
-                  <v-icon class="mr-2" size="20">mdi-account-clock</v-icon>
-                  <span>{{ total30dias }}</span>
-                </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-card class="pa-4" outlined>
-          <v-card-title class="text-center"></v-card-title>
-          <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.timep') }}</v-card-title>
-          <v-card-title class="text-center"></v-card-title>
-          <v-card-text>
-            <v-progress-linear :model-value="averageTimePercentage"
-              :color="averageTimePercentage > 50 ? 'red' : 'green'" height="30" class="mb-2">
-            </v-progress-linear>
-          </v-card-text>
-          <span class="text-gray">{{ formatTime(totalAverageTime) }}</span>
-          <v-card-title class="text-center"></v-card-title>
-        </v-card>
-      </v-col>
-
+  <v-main>
+    <v-container v-if="!sharedgeneral">
       <v-row justify="center">
-        <!-- Caja Cards -->
-        <v-col v-for="caja in cajas" :key="caja.id" cols="12" md="3">
-          <v-card class="pa-4" outlined :style="{
-            borderTop: caja.abierta ? '4px solid green' : '4px solid red'
-          }">
-            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.box') }} #{{ caja.id }} </v-card-title>
-            <v-card-subtitle class="text-center">
-              {{ this.$t('$vuetify.dataIterator.state') }}
-              <span :style="{
-                color: caja.abierta ? 'green' : 'red',
-                fontWeight: 'bold'
-              }">
-                {{ caja.abierta ? this.$t('$vuetify.dataIterator.open') : this.$t('$vuetify.dataIterator.close') }}
-              </span>
-            </v-card-subtitle>
-            <v-card-actions class="d-flex justify-center align-center">
-              <v-btn @click="showLogs(caja)" class="mx-auto" variant="outlined" style="font-size: 12px;">{{
-                this.$t('$vuetify.dataIterator.data') }}</v-btn>
-            </v-card-actions>
+        <v-col cols="12" md="4" class="d-flex flex-column">
+          <v-card class="pa-4" outlined style="flex-grow: 1;">
+            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.BoxState') }}</v-card-title>
+            <v-card-text class="d-flex justify-center align-center" style="flex-grow: 1;">
+              <v-progress-circular :model-value="(abiertas / total) * 100" :size="130" :width="20" color="green">
+                <template v-slot:default>
+                  <span class="text-gray">{{ ((abiertas / total) * 100).toFixed(0) }}%</span>
+                </template>
+              </v-progress-circular>
+            </v-card-text>
+            <span class="text-gray">
+              {{ this.$t('$vuetify.dataIterator.BoxState2') }} {{ abiertas }} {{ this.$t('$vuetify.dataIterator.of') }}
+              {{
+                total }}
+            </span>
           </v-card>
         </v-col>
-        <!-- Dialog with Caja details -->
-        <v-dialog v-model="dialogVisible" max-width="500px" align-center persistent>
-          <v-card>
-            <v-card-title class="text-center">
-              {{ this.$t('$vuetify.dataIterator.databox') }} {{ selectedCaja ? `#${selectedCaja.id}` : '' }}
-            </v-card-title>
+
+        <v-col cols="12" md="4">
+          <v-row dense>
+            <!-- Primera Card -->
+            <v-col cols="12">
+              <v-card class="pa-4" outlined>
+                <v-card-title class="text-center text-h6">{{ this.$t('$vuetify.dataIterator.atention') }}</v-card-title>
+                <v-card-text class="text-center">
+                  <v-chip color="green" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
+                    <v-icon class="mr-2" size="20">mdi-account-group</v-icon>
+                    <span>{{ totalClientes }}</span>
+                  </v-chip>
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <!-- Tercera Card -->
+            <v-col cols="6">
+              <v-card class="pa-4" outlined>
+                <v-card-title class="text-center text-body-2">{{ this.$t('$vuetify.dataIterator.yesterday')
+                  }}</v-card-title>
+                <v-card-text class="text-center">
+                  <v-chip color="red" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
+                    <v-icon class="mr-2" size="20">mdi-account-supervisor</v-icon>
+                    <span>{{ totalayer }}</span>
+                  </v-chip>
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <!-- Cuarta Card Vacía -->
+            <v-col cols="6">
+              <v-card class="pa-4" outlined>
+                <v-card-title class="text-body-2">{{ this.$t('$vuetify.dataIterator.yesterday30') }}</v-card-title>
+                <v-card-text class="text-center">
+                  <v-chip color="blue" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
+                    <v-icon class="mr-2" size="20">mdi-account-clock</v-icon>
+                    <span>{{ total30dias }}</span>
+                  </v-chip>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-card class="pa-4" outlined>
+            <v-card-title class="text-center"></v-card-title>
+            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.timep') }}</v-card-title>
+            <v-card-title class="text-center"></v-card-title>
             <v-card-text>
-              <!-- Chart -->
-              <div class="chart-container mb-2">
-                <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
-              </div>
-              <!-- Tpromedio Progress Bar -->
-              <div class="text-center mb-1 font-weight-bold">
-                {{ this.$t('$vuetify.dataIterator.timeprom') }}
-              </div>
-              <v-row justify="center">
-                <v-col cols="12" md="8">
-                  <v-progress-linear :model-value="(selectedCaja?.Tpromedio / 230) * 100"
-                    :color="getTpromedioColor(selectedCaja?.Tpromedio)" height="20">
-                    <template v-slot:default>
-                      {{ formatTime(selectedCaja?.Tpromedio) }}
-                    </template>
-                  </v-progress-linear>
-                </v-col>
-              </v-row>
-              <!-- Add margin to create space -->
-              <div style="margin-top: 30px;"></div>
-              <!-- Clientes Atendidos Chip -->
-              <div class="text-center mb-2">
-                <v-chip color="green" text-color="white" variant="outlined" class="d-flex align-center mx-auto" pill>
-                  <v-icon>mdi-account</v-icon> <!-- Icono a la izquierda -->
-                  <span class="mx-2">{{ this.$t('$vuetify.dataIterator.client') }}</span>
-                  <!-- Texto entre el icono y el valor -->
-                  <span>{{ selectedCaja?.clientes }}</span> <!-- Valor -->
-                </v-chip>
-              </div>
+              <v-progress-linear :model-value="averageTimePercentage"
+                :color="averageTimePercentage > 50 ? 'red' : 'green'" height="30" class="mb-2">
+              </v-progress-linear>
             </v-card-text>
-            <!-- Card actions -->
-            <v-card-actions class="justify-end">
-              <v-btn @click="dialogVisible = false" variant="outlined" color="error" text>
-                Cerrar
-              </v-btn>
-            </v-card-actions>
+            <span class="text-gray">{{ formatTime(totalAverageTime) }}</span>
+            <v-card-title class="text-center"></v-card-title>
           </v-card>
-        </v-dialog>
-      </v-row>
+        </v-col>
 
-    </v-row>
-  </v-container>
-  <v-container v-if="sharedgeneral">
-    <v-row justify="center">
-      <v-col cols="12" md="6" class="d-flex flex-column">
-        <v-card class="pa-6" outlined style="flex-grow: 1;">
-          <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.BoxState') }}</v-card-title>
-          <v-card-text class="d-flex justify-center align-center" style="flex-grow: 1;">
-            <v-progress-circular :model-value="(totalCajasAbiertas / totalcajasPorPais) * 100" :size="130" :width="20"
-              color="green">
-              <template v-slot:default>
-                <span class="text-gray">{{ ((totalCajasAbiertas / totalcajasPorPais) * 100).toFixed(0) }}%</span>
-              </template>
-            </v-progress-circular>
-          </v-card-text>
-          <span class="text-gray">
-            {{ this.$t('$vuetify.dataIterator.BoxState2') }} {{ totalCajasAbiertas }} {{
-              this.$t('$vuetify.dataIterator.of') }} {{ totalcajasPorPais }}
-          </span>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" md="6">
-        <v-row dense>
-          <v-col cols="12">
-            <v-card class="pa-4" outlined>
-              <v-card-title class="text-center text-h6">{{ this.$t('$vuetify.dataIterator.atention') }}</v-card-title>
-              <v-card-text class="text-center">
-                <v-chip color="green" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
-                  <v-icon class="mr-2" size="20">mdi-account-group</v-icon>
-                  <span>{{ totalClientesAtendidos }}</span>
-                </v-chip>
-              </v-card-text>
+        <v-row justify="center">
+          <!-- Caja Cards -->
+          <v-col v-for="caja in cajas" :key="caja.id" cols="12" md="3">
+            <v-card class="pa-4" outlined :style="{
+              borderTop: caja.abierta ? '4px solid green' : '4px solid red'
+            }">
+              <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.box') }} #{{ caja.id }}
+              </v-card-title>
+              <v-card-subtitle class="text-center">
+                {{ this.$t('$vuetify.dataIterator.state') }}
+                <span :style="{
+                  color: caja.abierta ? 'green' : 'red',
+                  fontWeight: 'bold'
+                }">
+                  {{ caja.abierta ? this.$t('$vuetify.dataIterator.open') : this.$t('$vuetify.dataIterator.close') }}
+                </span>
+              </v-card-subtitle>
+              <v-card-actions class="d-flex justify-center align-center">
+                <v-btn @click="showLogs(caja)" class="mx-auto" variant="outlined" style="font-size: 12px;">{{
+                  this.$t('$vuetify.dataIterator.data') }}</v-btn>
+              </v-card-actions>
             </v-card>
           </v-col>
-
-          <!-- Tercera Card -->
-          <v-col cols="6">
-            <v-card class="pa-4" outlined>
-              <v-card-title class="text-center text-body-4">{{ this.$t('$vuetify.dataIterator.yesterday')
-                }}</v-card-title>
-              <v-card-text class="text-center">
-                <v-chip color="red" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
-                  <v-icon class="mr-2" size="20">mdi-account-supervisor</v-icon>
-                  <span>{{ totalClientesAtendidosAyer }}</span>
-                </v-chip>
+          <!-- Dialog with Caja details -->
+          <v-dialog v-model="dialogVisible" max-width="500px" align-center persistent>
+            <v-card>
+              <v-card-title class="text-center">
+                {{ this.$t('$vuetify.dataIterator.databox') }} {{ selectedCaja ? `#${selectedCaja.id}` : '' }}
+              </v-card-title>
+              <v-card-text>
+                <!-- Chart -->
+                <div class="chart-container mb-2">
+                  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+                </div>
+                <!-- Tpromedio Progress Bar -->
+                <div class="text-center mb-1 font-weight-bold">
+                  {{ this.$t('$vuetify.dataIterator.timeprom') }}
+                </div>
+                <v-row justify="center">
+                  <v-col cols="12" md="8">
+                    <v-progress-linear :model-value="(selectedCaja?.Tpromedio / 230) * 100"
+                      :color="getTpromedioColor(selectedCaja?.Tpromedio)" height="20">
+                      <template v-slot:default>
+                        {{ formatTime(selectedCaja?.Tpromedio) }}
+                      </template>
+                    </v-progress-linear>
+                  </v-col>
+                </v-row>
+                <!-- Add margin to create space -->
+                <div style="margin-top: 30px;"></div>
+                <!-- Clientes Atendidos Chip -->
+                <div class="text-center mb-2">
+                  <v-chip color="green" text-color="white" variant="outlined" class="d-flex align-center mx-auto" pill>
+                    <v-icon>mdi-account</v-icon> <!-- Icono a la izquierda -->
+                    <span class="mx-2">{{ this.$t('$vuetify.dataIterator.client') }}</span>
+                    <!-- Texto entre el icono y el valor -->
+                    <span>{{ selectedCaja?.clientes }}</span> <!-- Valor -->
+                  </v-chip>
+                </div>
               </v-card-text>
+              <!-- Card actions -->
+              <v-card-actions class="justify-end">
+                <v-btn @click="dialogVisible = false" variant="outlined" color="error" text>
+                  Cerrar
+                </v-btn>
+              </v-card-actions>
             </v-card>
-          </v-col>
-
-          <!-- Cuarta Card Vacía -->
-          <v-col cols="6">
-            <v-card class="pa-4" outlined>
-              <v-card-title class="text-center text-body-4">{{ this.$t('$vuetify.dataIterator.yesterday30')
-                }}</v-card-title>
-              <v-card-text class="text-center">
-                <v-chip color="blue" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
-                  <v-icon class="mr-2" size="20">mdi-account-clock</v-icon>
-                  <span>{{ totalClientesAtendidos30Dias }}</span>
-                </v-chip>
-              </v-card-text>
-            </v-card>
-          </v-col>
+          </v-dialog>
         </v-row>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-card class="pa-4" outlined>
-          <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.timep') }}</v-card-title>
-          <v-card-text>
-            <v-progress-linear :model-value=averageTimePercentagePais
-              :color="averageTimePercentagePais > 50 ? 'red' : 'green'" height="22" class="mb-2">
-            </v-progress-linear>
-          </v-card-text>
-          <span class="text-gray">{{ formatTime(totalAverageTimePais) }}</span>
-        </v-card>
-      </v-col>
 
-    </v-row>
-  </v-container>
+      </v-row>
+    </v-container>
+    <v-container v-if="sharedgeneral">
+      <v-row justify="center">
+        <v-col cols="12" md="6" class="d-flex flex-column">
+          <v-card class="pa-6" outlined style="flex-grow: 1;">
+            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.BoxState') }}</v-card-title>
+            <v-card-text class="d-flex justify-center align-center" style="flex-grow: 1;">
+              <v-progress-circular :model-value="(totalCajasAbiertas / totalcajasPorPais) * 100" :size="130" :width="20"
+                color="green">
+                <template v-slot:default>
+                  <span class="text-gray">{{ ((totalCajasAbiertas / totalcajasPorPais) * 100).toFixed(0) }}%</span>
+                </template>
+              </v-progress-circular>
+            </v-card-text>
+            <span class="text-gray">
+              {{ this.$t('$vuetify.dataIterator.BoxState2') }} {{ totalCajasAbiertas }} {{
+                this.$t('$vuetify.dataIterator.of') }} {{ totalcajasPorPais }}
+            </span>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <v-row dense>
+            <v-col cols="12">
+              <v-card class="pa-4" outlined>
+                <v-card-title class="text-center text-h6">{{ this.$t('$vuetify.dataIterator.atention') }}</v-card-title>
+                <v-card-text class="text-center">
+                  <v-chip color="green" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
+                    <v-icon class="mr-2" size="20">mdi-account-group</v-icon>
+                    <span>{{ totalClientesAtendidos }}</span>
+                  </v-chip>
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <!-- Tercera Card -->
+            <v-col cols="6">
+              <v-card class="pa-4" outlined>
+                <v-card-title class="text-center text-body-4">{{ this.$t('$vuetify.dataIterator.yesterday')
+                  }}</v-card-title>
+                <v-card-text class="text-center">
+                  <v-chip color="red" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
+                    <v-icon class="mr-2" size="20">mdi-account-supervisor</v-icon>
+                    <span>{{ totalClientesAtendidosAyer }}</span>
+                  </v-chip>
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <!-- Cuarta Card Vacía -->
+            <v-col cols="6">
+              <v-card class="pa-4" outlined>
+                <v-card-title class="text-center text-body-4">{{ this.$t('$vuetify.dataIterator.yesterday30')
+                  }}</v-card-title>
+                <v-card-text class="text-center">
+                  <v-chip color="blue" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
+                    <v-icon class="mr-2" size="20">mdi-account-clock</v-icon>
+                    <span>{{ totalClientesAtendidos30Dias }}</span>
+                  </v-chip>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-card class="pa-4" outlined>
+            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.timep') }}</v-card-title>
+            <v-card-text>
+              <v-progress-linear :model-value=averageTimePercentagePais
+                :color="averageTimePercentagePais > 50 ? 'red' : 'green'" height="22" class="mb-2">
+              </v-progress-linear>
+            </v-card-text>
+            <span class="text-gray">{{ formatTime(totalAverageTimePais) }}</span>
+          </v-card>
+        </v-col>
+
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -380,7 +384,7 @@ export default {
           { name: 'Lille', resource: 'lille' }
         ];
 
-        const baseUrl = 'http://181.104.17.104:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
 
         // Iterar sobre todas las tiendas
         for (let i = 0; i < tiendas.length; i++) {
@@ -443,7 +447,7 @@ export default {
     async getTotal() {
       try {
         // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://181.104.17.104:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
         const response = await axios.get(`${baseUrl}${this.resource}`);
 
         // Accede directamente al objeto `response.data`
