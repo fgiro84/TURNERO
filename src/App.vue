@@ -97,15 +97,7 @@
           </v-card>
         </v-dialog>
       </v-navigation-drawer>
-
-
-
-      <router-view>
-
-      </router-view>
-
-
-
+      <router-view :sharedselectedOption="selectedOption" :sharedselectedCountry="selectedCountry" :sharedgeneral="general" />
       <v-footer app fixed>
         <span class="white--text" style="color: #E0E0E0;">&copy;
           {{ new Date().getFullYear() }}
@@ -129,6 +121,7 @@
 <script>
 import LoginForm from '/src/components/LoginForm.vue';
 import Index from '/src/pages/index.vue';
+
 
 export default {
   data: () => ({
@@ -211,7 +204,8 @@ export default {
     selectStore(store) {
       console.log(`Tienda seleccionada: ${store.city}`);
       this.searchQuery = "", // Actualiza el campo con la tienda seleccionada
-        this.selectedOption = `${store.city}`;
+      this.selectedOption = `${store.city}`;
+        
       this.general = false;
     },
     handleOptionClick(country, option) {

@@ -13,11 +13,13 @@
     "@mdi/font": "7.4.47",
     "axios": "^1.7.9",
     "chart.js": "^4.4.7",
+    "pinia": "^2.3.0",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
     "vue-chartjs": "^5.3.2",
     "vue-i18n": "^11.0.1",
-    "vuetify": "^3.7.6"
+    "vuetify": "^3.7.6",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
