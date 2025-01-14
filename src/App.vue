@@ -79,6 +79,8 @@
         <v-list nav>
           <v-list-item @click="navigateToIndex" prepend-icon="mdi-view-dashboard" title="Panel" value="dashboard"
             color="#00ffcc"></v-list-item>
+          <v-list-item @click="navigateToCaller" prepend-icon="mdi-phone-outline" title="Caller" value="caller"
+            color="#00ffcc"></v-list-item>
           <v-list-item @click="navigateToAccount" prepend-icon="mdi-account-cog" title="Cuentas" value="error"
             color="#00ffcc"></v-list-item>
           <v-list-item @click="navigateToSetting" prepend-icon="mdi-cogs" title="Configurar" value="config"
@@ -91,13 +93,16 @@
             <v-card-title>{{ dialogTitle }}</v-card-title>
             <v-card-text>{{ dialogMessage }}</v-card-text>
             <v-card-actions>
-              <v-btn color="#00ffcc" @click="closeDialog">Cancelar</v-btn>
-              <v-btn color="#00ffcc" @click="confirmDialogAction">Aceptar</v-btn>
+              <v-btn prepend-icon="mdi-cancel" class="mb-8" variant="tonal" color="#00ffcc"
+                @click="closeDialog">Cancelar</v-btn>
+              <v-btn prepend-icon="mdi-check-outline" class="mb-8" variant="tonal" color="#00ffcc"
+                @click="confirmDialogAction">Aceptar</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-navigation-drawer>
-      <router-view :sharedselectedOption="selectedOption" :sharedselectedCountry="selectedCountry" :sharedgeneral="general" />
+      <router-view :sharedselectedOption="selectedOption" :sharedselectedCountry="selectedCountry"
+        :sharedgeneral="general" />
       <v-footer app fixed>
         <span class="white--text" style="color: #E0E0E0;">&copy;
           {{ new Date().getFullYear() }}
@@ -204,8 +209,8 @@ export default {
     selectStore(store) {
       console.log(`Tienda seleccionada: ${store.city}`);
       this.searchQuery = "", // Actualiza el campo con la tienda seleccionada
-      this.selectedOption = `${store.city}`;
-        
+        this.selectedOption = `${store.city}`;
+
       this.general = false;
     },
     handleOptionClick(country, option) {
@@ -235,6 +240,9 @@ export default {
     },
     navigateToIndex() {
       this.$router.push({ path: '/' });
+    },
+    navigateToCaller() {
+      this.$router.push({ path: '/caller' });
     },
     navigateToAccount() {
       this.$router.push({ path: '/account' });

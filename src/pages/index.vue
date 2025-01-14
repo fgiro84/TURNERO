@@ -384,7 +384,8 @@ export default {
           { name: 'Lille', resource: 'lille' }
         ];
 
-        const baseUrl = 'http://192.168.0.128:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
+
 
         // Iterar sobre todas las tiendas
         for (let i = 0; i < tiendas.length; i++) {
@@ -447,7 +448,8 @@ export default {
     async getTotal() {
       try {
         // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://192.168.0.128:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
+
         const response = await axios.get(`${baseUrl}${this.resource}`);
 
         // Accede directamente al objeto `response.data`
