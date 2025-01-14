@@ -97,7 +97,7 @@
         <v-col cols="12" sm="12" md="12" class="d-flex align-stretch">
           <v-card class="flex-grow-1 d-flex align-center" color="#b1e2f9" dark style="min-height: 100px;">
             <v-card-title class="text-h5 text-center" style="color: #025aaa; font-size: 2rem; flex: 1; font-weight: bold;">
-              Dos clientes por caja otimiza tu tiempo. Por eso, cuando veas un<br>espacio libre en la caja, podés pasar
+              Dos clientes por caja optimiza tu tiempo. Por eso, cuando veas un<br>espacio libre en la caja, podés pasar
               a descargar los productos.
             </v-card-title>
             <img src="/demofoot.png" alt="Imagen de caja"

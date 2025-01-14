@@ -79,7 +79,7 @@
         <v-list nav>
           <v-list-item @click="navigateToIndex" prepend-icon="mdi-view-dashboard" title="Panel" value="dashboard"
             color="#00ffcc"></v-list-item>
-          <v-list-item @click="navigateToCaller" prepend-icon="mdi-phone-outline" title="Caller" value="caller"
+          <v-list-item @click="navigateToCaller" prepend-icon="mdi-phone-outline" title="Llamador" value="caller"
             color="#00ffcc"></v-list-item>
           <v-list-item @click="navigateToAccount" prepend-icon="mdi-account-cog" title="Cuentas" value="error"
             color="#00ffcc"></v-list-item>
