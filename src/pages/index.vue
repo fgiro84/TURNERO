@@ -385,7 +385,7 @@ export default {
           { name: 'Lille', resource: 'lille' }
         ];
 
-        const baseUrl = 'http://192.168.0.162:4000/';
+        const baseUrl = 'http://192.168.1.46:4000/';
 
 
         // Iterar sobre todas las tiendas
@@ -448,35 +448,36 @@ export default {
     },
     async getTotal() {
       try {
-        // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://192.168.0.162:4000/';
+        // Obtener el token almacenado en localStorage
+        const accessToken = localStorage.getItem('accessToken');
 
-        const response = await axios.get(`${baseUrl}${this.resource}`);
+        if (!accessToken) {
+          alert('No se encontró el token de acceso. Por favor, inicia sesión nuevamente.');
+          return;
+        }
 
-        // Accede directamente al objeto `response.data`
-        const data = response.data || {};
+        // Realizar la solicitud GET al servidor
+        const response = await axios.get('http://cf-turnero.minigo.store:7001/api/open_cashiers', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`, // Incluir el token en el encabezado
+          },
+        });
 
-        // Procesa los datos de las cajas
-        this.cajas = data.cajas || [];
+        console.log('Datos del usuario:', response.data);
 
-        // Total de cajas
-        this.total = this.cajas.length;
+        // Procesar los datos obtenidos
+        const { total_cashiers, total_open_cashiers } = response.data;
 
-        // Cantidad de cajas activas
-        this.activas = this.cajas.filter(caja => caja.activa).length;
+        // Actualizar las propiedades reactivas
+        this.total = total_cashiers;
+        this.abiertas = total_open_cashiers;
 
-        // Cantidad de cajas abiertas
-        this.abiertas = this.cajas.filter(caja => caja.abierta).length;
-
-        // Calcula tiempos promedio (opcional)
-        this.calculateAverageTime();
-
-        // Total del día anterior y últimos 30 días
-        this.totalayer = data.totalayer;
-        this.total30dias = data.total30dias;
-
+        console.log(`Total de cajeros: ${this.total}`);
+        console.log(`Cajeros abiertos: ${this.abiertas}`);
       } catch (error) {
-        console.error("Error al obtener los datos:", error);
+        console.error('Error al obtener los datos del usuario:', error);
+        alert('No se pudo obtener la información del usuario. Intenta nuevamente.');
       }
     },
     showLogs(caja) {

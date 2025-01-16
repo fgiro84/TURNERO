@@ -5,8 +5,8 @@
     <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg">
       <div class="text-subtitle-1 text-medium-emphasis">{{ this.$t('$vuetify.dataIterator.account') }}</div>
 
-      <v-text-field v-model="email" density="compact" :placeholder="$t('$vuetify.dataIterator.mail')" prepend-inner-icon="mdi-email-outline"
-        variant="outlined" autocomplete="email"></v-text-field>
+      <v-text-field v-model="email" density="compact" :placeholder="$t('$vuetify.dataIterator.mail')"
+        prepend-inner-icon="mdi-email-outline" variant="outlined" autocomplete="email"></v-text-field>
 
       <v-text-field v-model="password" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         :type="visible ? 'text' : 'password'" density="compact" :placeholder="$t('$vuetify.dataIterator.pass')"
@@ -27,7 +27,10 @@
   </div>
 </template>
 
+
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
     email: '',
@@ -35,14 +38,40 @@ export default {
     visible: false,
   }),
   methods: {
-    handleLogin() {
-      const defaultEmail = '';
-      const defaultPassword = '';
+    async handleLogin() {
+      if (!this.email || !this.password) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
 
-      if (this.email === defaultEmail && this.password === defaultPassword) {
-        this.$emit('login-success'); // Notifica al componente padre
-      } else {
-        alert('Credenciales incorrectas. Intenta de nuevo.');
+      try {
+        const response = await axios.post('http://cf-turnero.minigo.store:7001/api/login', {
+          username: this.email,
+          password: this.password,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+
+          },
+        });
+
+        const { msg, access_token, token_type, user } = response.data;
+
+        if (msg === 'Login Successfull') {
+          // Guardar el token en el almacenamiento local
+          localStorage.setItem('accessToken', access_token);
+          localStorage.setItem('tokenType', token_type);
+
+          // Emitir evento de éxito con los datos del usuario
+          this.$emit('login-success', user);
+
+          //alert(`Bienvenido, ${user.fullname}!`);
+        } else {
+          alert('Credenciales incorrectas. Intenta de nuevo.');
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        alert('Error al conectar con el servidor. Intenta nuevamente.');
       }
     },
   },
