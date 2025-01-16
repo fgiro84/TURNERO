@@ -285,6 +285,7 @@ export default {
     resource(newResource) {
       console.log('resource cambió a: ', newResource);
       this.getTotal();  // Llamamos a getTotal para recargar los datos
+      this.getTotalCajasPorPais();  // Llama a la función recursiva al cambiar el país
     },
     sharedselectedOption(newOption) {
       // Actualizamos el valor de resource cuando sharedselectedOption cambia
@@ -384,7 +385,7 @@ export default {
           { name: 'Lille', resource: 'lille' }
         ];
 
-        const baseUrl = 'http://192.168.1.46:4000/';
+        const baseUrl = 'http://192.168.0.162:4000/';
 
 
         // Iterar sobre todas las tiendas
@@ -448,7 +449,7 @@ export default {
     async getTotal() {
       try {
         // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://192.168.1.46:4000/';
+        const baseUrl = 'http://192.168.0.162:4000/';
 
         const response = await axios.get(`${baseUrl}${this.resource}`);
 
