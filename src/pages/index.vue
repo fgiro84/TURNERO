@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col cols="12" md="4" class="d-flex flex-column">
           <v-card class="pa-4" outlined style="flex-grow: 1;">
-            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.BoxState') }}</v-card-title>
+            <v-card-title class="text-center multiline-title">{{ this.$t('$vuetify.dataIterator.BoxState') }}</v-card-title>
             <v-card-text class="d-flex justify-center align-center" style="flex-grow: 1;">
               <v-progress-circular :model-value="(abiertas / total) * 100" :size="130" :width="20" color="green">
                 <template v-slot:default>
@@ -25,7 +25,7 @@
             <!-- Primera Card -->
             <v-col cols="12">
               <v-card class="pa-4" outlined>
-                <v-card-title class="text-center text-h6">{{ this.$t('$vuetify.dataIterator.atention') }}</v-card-title>
+                <v-card-title class="text-center text-h6 multiline-title">{{ this.$t('$vuetify.dataIterator.atention') }}</v-card-title>
                 <v-card-text class="text-center">
                   <v-chip color="green" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
                     <v-icon class="mr-2" size="20">mdi-account-group</v-icon>
@@ -38,7 +38,7 @@
             <!-- Tercera Card -->
             <v-col cols="6">
               <v-card class="pa-4" outlined>
-                <v-card-title class="text-center text-body-2">{{ this.$t('$vuetify.dataIterator.yesterday')
+                <v-card-title class="text-center text-body-2 multiline-title">{{ this.$t('$vuetify.dataIterator.yesterday')
                   }}</v-card-title>
                 <v-card-text class="text-center">
                   <v-chip color="red" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
@@ -52,7 +52,7 @@
             <!-- Cuarta Card Vacía -->
             <v-col cols="6">
               <v-card class="pa-4" outlined>
-                <v-card-title class="text-body-2">{{ this.$t('$vuetify.dataIterator.yesterday30') }}</v-card-title>
+                <v-card-title class="text-body-2 multiline-title">{{ this.$t('$vuetify.dataIterator.yesterday30') }}</v-card-title>
                 <v-card-text class="text-center">
                   <v-chip color="blue" text-color="white" class="mx-auto d-flex align-center text-h6" pill>
                     <v-icon class="mr-2" size="20">mdi-account-clock</v-icon>
@@ -66,7 +66,7 @@
         <v-col cols="12" md="4">
           <v-card class="pa-4" outlined>
             <v-card-title class="text-center"></v-card-title>
-            <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.timep') }}</v-card-title>
+            <v-card-title class="text-center multiline-title">{{ this.$t('$vuetify.dataIterator.timep') }}</v-card-title>
             <v-card-title class="text-center"></v-card-title>
             <v-card-text>
               <v-progress-linear :model-value="averageTimePercentage"
@@ -84,7 +84,7 @@
             <v-card class="pa-4" outlined :style="{
               borderTop: caja.abierta ? '4px solid green' : '4px solid red'
             }">
-              <v-card-title class="text-center">{{ this.$t('$vuetify.dataIterator.box') }} #{{ caja.id }}
+              <v-card-title class="text-center multiline-title">{{ this.$t('$vuetify.dataIterator.box') }} #{{ caja.id }}
               </v-card-title>
               <v-card-subtitle class="text-center">
                 {{ this.$t('$vuetify.dataIterator.state') }}
@@ -104,7 +104,7 @@
           <!-- Dialog with Caja details -->
           <v-dialog v-model="dialogVisible" max-width="500px" align-center persistent>
             <v-card>
-              <v-card-title class="text-center">
+              <v-card-title class="text-center multiline-title">
                 {{ this.$t('$vuetify.dataIterator.databox') }} {{ selectedCaja ? `#${selectedCaja.id}` : '' }}
               </v-card-title>
               <v-card-text>
@@ -609,4 +609,11 @@ export default {
   padding: 2px 8px;
   /* Ajusta el relleno alrededor del contenido */
 }
+
+.multiline-title {
+  white-space: normal; /* Permite varias líneas */
+  word-break: break-word; /* Permite dividir palabras largas */
+  line-height: 1.2; /* Ajusta el espacio entre líneas */
+}
+
 </style>
