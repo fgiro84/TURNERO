@@ -93,7 +93,7 @@
             <v-card-title>{{ dialogTitle }}</v-card-title>
             <v-card-text>{{ dialogMessage }}</v-card-text>
             <v-card-actions>
-              <v-btn prepend-icon="mdi-cancel" class="mb-8" variant="tonal" color="#00ffcc"
+              <v-btn prepend-icon="mdi-cancel" class="mb-8" variant="tonal" color="#f0143c"
                 @click="closeDialog">Cancelar</v-btn>
               <v-btn prepend-icon="mdi-check-outline" class="mb-8" variant="tonal" color="#00ffcc"
                 @click="confirmDialogAction">Aceptar</v-btn>
