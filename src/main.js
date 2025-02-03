@@ -25,7 +25,7 @@ const messages = {
                 BoxState2: 'Cajas Abiertas:',
                 of: 'de',
                 atention: 'Clientes Atendidos Hoy',
-                yesterday: 'Ayer',
+                yesterday: 'Día Anterior',
                 yesterday30: 'Últimos 30 Días',
                 timep: 'Tiempo Promedio de Atención',
                 box: 'CAJA',

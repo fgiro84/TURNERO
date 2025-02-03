@@ -6,6 +6,41 @@
       <v-app-bar app fixed>
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" app></v-app-bar-nav-icon>
         <v-toolbar-title>KPI</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-card style="width: 800px;">
+          <v-card-text style="display: flex; align-items: center;">
+            <!-- Campo de texto con búsqueda -->
+            <v-text-field v-model="searchQuery" append-inner-icon="mdi-magnify" density="compact" hide-details
+              :placeholder="$t('$vuetify.dataIterator.search')" variant="outlined" single-line style="max-width: 300px;"
+              rounded></v-text-field>
+
+            <!-- Sugerencias como v-chip a la derecha -->
+            <div v-if="searchQuery && filteredItems.length" style="margin-left: 16px; display: flex; flex-wrap: wrap;">
+              <v-chip v-for="(item, index) in limitedItems" :key="index" class="ma-1" color="white" outlined
+                @click="selectStore(item)">
+                {{ item.city }}
+              </v-chip>
+            </div>
+          </v-card-text>
+        </v-card>
+
+
+        <v-btn icon @click="setLanguage('es')" color="white">
+          <img src="/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
+        </v-btn>
+        <v-btn icon @click="setLanguage('pt')" color="white">
+          <img src="/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
+        </v-btn>
+        <v-btn icon @click="setLanguage('fr')" color="white">
+          <img src="/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
+        </v-btn>
+      </v-app-bar>
+
+      <v-app-bar app fixed>
+        <v-spacer></v-spacer>
+
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-earth" variant="text" v-bind="props"></v-btn>
@@ -40,36 +75,7 @@
           </v-list>
         </v-menu>
         <v-spacer></v-spacer>
-
-        <v-card style="width: 800px;">
-          <v-card-text style="display: flex; align-items: center;">
-            <!-- Campo de texto con búsqueda -->
-            <v-text-field v-model="searchQuery" append-inner-icon="mdi-magnify" density="compact" hide-details
-              :placeholder="$t('$vuetify.dataIterator.search')" variant="outlined" single-line style="max-width: 300px;"
-              rounded></v-text-field>
-
-            <!-- Sugerencias como v-chip a la derecha -->
-            <div v-if="searchQuery && filteredItems.length" style="margin-left: 16px; display: flex; flex-wrap: wrap;">
-              <v-chip v-for="(item, index) in limitedItems" :key="index" class="ma-1" color="white" outlined
-                @click="selectStore(item)">
-                {{ item.city }}
-              </v-chip>
-            </div>
-          </v-card-text>
-        </v-card>
-
-
-        <v-btn icon @click="setLanguage('es')" color="white">
-          <img src="/flags/spain.png" alt="Español" style="width: 24px; height: 24px;" />
-        </v-btn>
-        <v-btn icon @click="setLanguage('pt')" color="white">
-          <img src="/flags/brasil.png" alt="Português" style="width: 24px; height: 24px;" />
-        </v-btn>
-        <v-btn icon @click="setLanguage('fr')" color="white">
-          <img src="/flags/francia.png" alt="English" style="width: 24px; height: 24px;" />
-        </v-btn>
       </v-app-bar>
-
       <v-navigation-drawer v-model="drawer" location="left" app>
         <template v-slot:prepend>
           <v-list-item lines="two" prepend-avatar="/max.png" subtitle="Logged in" title="MAX T CARR"></v-list-item>
@@ -78,6 +84,8 @@
         <v-divider></v-divider>
         <v-list nav>
           <v-list-item @click="navigateToIndex" prepend-icon="mdi-view-dashboard" title="Panel" value="dashboard"
+            color="#00ffcc"></v-list-item>
+          <v-list-item @click="navigateToBoxs" prepend-icon="mdi-apps-box" title="Cajas" value="box"
             color="#00ffcc"></v-list-item>
           <v-list-item @click="navigateToCaller" prepend-icon="mdi-phone-outline" title="Llamador" value="caller"
             color="#00ffcc"></v-list-item>
@@ -240,6 +248,9 @@ export default {
     },
     navigateToIndex() {
       this.$router.push({ path: '/' });
+    },
+    navigateToBoxs() {
+      this.$router.push({ path: '/boxs' });
     },
     navigateToCaller() {
       this.$router.push({ path: '/caller' });

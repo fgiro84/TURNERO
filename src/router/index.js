@@ -6,6 +6,7 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
 import Index from "@/pages/index.vue";
+import Boxs from "@/pages/index2.vue";
 import Caller from "@/components/Caller.vue";
 import Account from "@/components/Account.vue";
 import Setting from "@/components/Setting.vue";
@@ -26,6 +27,11 @@ const router = createRouter({
                 sharedselectedCountry: route.query.selectedCountry || "Argentina",
                 sharedgeneral: route.query.general || false,
             }),
+        },
+        {
+            path: "/boxs",
+            name: "Boxs",
+            component: Boxs,
         },
         {
             path: "/caller",
