@@ -63,7 +63,7 @@ export default {
     }
 
     try {
-      const response = await axios.get("http://192.168.1.5:4005/users", {
+      const response = await axios.get("http://192.168.0.128:4000/users", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

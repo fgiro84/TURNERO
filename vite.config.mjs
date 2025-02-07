@@ -51,7 +51,7 @@ export default defineConfig({
         ],
     },
     server: {
-        host: '192.168.1.51',
+        host: '192.168.0.162',
         port: 3000,
     },
     css: {

@@ -166,7 +166,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://192.168.1.5:4005/login', {
+        const response = await axios.post('http://192.168.0.128:4000/login', {
           email: this.email,
           password: this.password,
         }, {
@@ -196,7 +196,7 @@ export default {
       this.successMessage = "";
 
       try {
-        const response = await axios.post("http://192.168.1.5:4005/register", {
+        const response = await axios.post("http://192.168.0.128:4000/register", {
           email: this.email,
           password: this.password,
         }, {
