@@ -91,6 +91,7 @@ export default {
   },
   data() {
     return {
+      pais: null,
       totalayer: 0,
       total30dias: 0,
       total: 0,
@@ -141,9 +142,64 @@ export default {
   },
   methods: {
     async updateCajaState(caja) {
-     // Cambiar el estado de 'abierta' de la caja en la vista local
-    caja.abierta = !caja.abierta; // Cambia el estado de abierta a cerrada, o viceversa
+      this.loading = true;
+      this.error = null;
+
+      const accessToken = localStorage.getItem("accessToken");
+
+      if (!accessToken) {
+        alert("No se encontró el token de acceso. Por favor, inicia sesión nuevamente.");
+        return;
+      }
+
+      // Asumiendo que 'caja' es el id y accedemos a la caja correspondiente
+      const cajaData = this.cajas.find(c => c.id === caja); // Encuentra la caja con el id correspondiente
+
+      if (cajaData) {
+        // Alternamos el estado de 'abierta' entre true y false
+        cajaData.abierta = !cajaData.abierta; // Si 'abierta' es true, lo cambiaremos a false y viceversa
+      } else {
+        console.error("No se encontró la caja con el id especificado.");
+        this.error = "No se encontró la caja especificada.";
+        this.loading = false;
+        return;
+      }
+
+      // Datos a enviar
+      const data = {
+        pais: this.pais,
+        totalayer: this.totalayer,
+        total30dias: this.total30dias,
+        cajas: this.cajas, // Enviamos el estado actualizado de todas las cajas
+      };
+
+      try {
+        const baseUrl = "http://192.168.1.5:4005/";
+
+        const response = await axios.post(`${baseUrl}${this.resource}`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        console.log("Cajas actualizadas exitosamente:", response.data);
+
+      } catch (error) {
+        console.error("Error al actualizar las cajas:", error);
+
+        if (error.response) {
+          this.error = `Error: ${error.response.data.message || 'No se pudo procesar la solicitud.'}`;
+        } else if (error.request) {
+          this.error = 'No se recibió respuesta del servidor.';
+        } else {
+          this.error = `Error de configuración: ${error.message}`;
+        }
+      } finally {
+        this.loading = false;
+      }
     },
+
     updateResource() {
       switch (this.sharedselectedOption) {
         case 'Vicente López':
@@ -245,7 +301,7 @@ export default {
 
 
 
-        const baseUrl = 'http://192.168.0.128:4000/';
+        const baseUrl = 'http://192.168.1.5:4005/';
 
         // Iterar sobre todas las tiendas
         for (let i = 0; i < tiendas.length; i++) {
@@ -321,7 +377,7 @@ export default {
       }
       try {
         // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://192.168.0.128:4000/';
+        const baseUrl = 'http://192.168.1.5:4005/';
 
         const response = await axios.get(`${baseUrl}${this.resource}`, {
           headers: {
@@ -350,6 +406,7 @@ export default {
         this.calculateAverageTime();
 
         // Total del día anterior y últimos 30 días
+        this.pais = data.pais;
         this.totalayer = data.totalayer;
         this.total30dias = data.total30dias;
 
