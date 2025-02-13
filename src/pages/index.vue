@@ -343,7 +343,7 @@ export default {
 
 
 
-        const baseUrl = 'http://192.168.1.5:4005/';
+        const baseUrl = 'https://jsonserver.homeserveramorcito.uk/';
 
         // Iterar sobre todas las tiendas
         for (let i = 0; i < tiendas.length; i++) {
@@ -422,7 +422,7 @@ export default {
       this.error = null;
       try {
         // Construye la URL dinámicamente usando el parámetro `resource`
-        const baseUrl = 'http://192.168.1.5:4005/';
+        const baseUrl = 'https://jsonserver.homeserveramorcito.uk/';
 
         const response = await axios.get(`${baseUrl}${this.resource}`, {
           headers: {

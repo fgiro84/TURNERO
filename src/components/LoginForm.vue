@@ -14,7 +14,7 @@
 
         <a class="text-caption text-decoration-none" href="#" rel="noopener noreferrer" target="_blank"
           style="color: #28d6cc;">
-          Olvidaste tú contraseña?
+          Olvidaste contraseña?
         </a>
       </div>
 
@@ -166,7 +166,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://192.168.1.5:4005/login', {
+        const response = await axios.post('https://jsonserver.homeserveramorcito.uk/login', {
           email: this.email,
           password: this.password,
         }, {
@@ -196,7 +196,7 @@ export default {
       this.successMessage = "";
 
       try {
-        const response = await axios.post("http://192.168.1.5:4005/register", {
+        const response = await axios.post('https://jsonserver.homeserveramorcito.uk/register', {
           email: this.email,
           password: this.password,
         }, {
